@@ -2,7 +2,7 @@ from actions import *
 
 
 # funkcia konvertuj - prepis jednorozmerneho pola na suradnice dvojrozmerneho pola, potrebne pre kontrolu, ci nevystupujem z pola
-def konvertuj(pozicia):
+def konvertuj(pozicia,n):
     x = pozicia // n
     y = pozicia % n
     return x, y
@@ -28,7 +28,7 @@ def add(total, value, stack, count):
 
 
 def body(value, new_index, total, n):
-    poz1, poz2 = konvertuj(new_index)
+    poz1, poz2 = konvertuj(new_index,n)
     count = heuristika(value, new_index, poz2, poz1, n)  # ohodnotenie kazdej pozicie
     total.append([count, new_index])  # pridanie do listu
 
@@ -47,7 +47,7 @@ def check(value, index, total, y, x, n):
 def pohyb(value, n, stack, count):
     index = value.index(max(value))  # zistenie maxima mi sluzi na najdenie indexu posledneho kroku kde sa nachadzam
     total = []
-    y, x = konvertuj(index)  # prepis na dvojrozmerne pole pre kontrolu ci nepresahujem hranice mapy
+    y, x = konvertuj(index,n)  # prepis na dvojrozmerne pole pre kontrolu ci nepresahujem hranice mapy
     check(value, index, total, y, x, n)
     total.sort()  # sort listu - sluzi ako queue, 0 prvok beriem do postupnosti (ma najlepsie ohodnotenie podla heuristiky)
     add(total, value, stack, count)  # ostatne prvky z queue pridavam do listu
@@ -55,6 +55,11 @@ def pohyb(value, n, stack, count):
         return -1
     return total[0][1]  # returnem najmensi prvok z queue
 
+def succes(value,pocitadlo,final,p):
+    print("Uspech ", value)
+    pocitadlo += 1
+    final.append(p)
+    return pocitadlo,value
 
 def solve(n):
     pocitadlo = 0
@@ -80,16 +85,16 @@ def solve(n):
                 value = stack.pop()  # v pripade neuspechu berem najblizsi stav
                 count = max(value)  # do countu si ulozim cislo posledneho kroku
             else:
-                count += 1
-                value[new] = count  # poznacenie si pozicie ktora bola vyhodnotena za najlepsiu
+                count+=1
+                value[new]=count # poznacenie si pozicie ktora bola vyhodnotena za najlepsiu
                 if min(value) != 0:  # ak minimum je 1 tak som dosiahol finalny stav
-                    print("Uspech ", value)
-                    pocitadlo += 1
-                    final.append(p)
+                    pocitadlo,value=succes(value,pocitadlo,final,p)
         if pocitadlo == 10:
             break
     return final
 
+def main():
+    n = (int(input()))  # vstup - velkost mapy
+    print("pozicie z ktorych sa da dostat:", solve(n))  # vypis pozicii z ktorych viem dosiahnut finalny stav
 
-n = (int(input()))  # vstup - velkost mapy
-print("pozicie z ktorych sa da dostat:", solve(n))  # vypis pozicii z ktorych viem dosiahnut finalny stav
+main()
