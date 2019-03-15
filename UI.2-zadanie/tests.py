@@ -75,11 +75,12 @@ def check_move(value, n):
 
 def input_params():
     #v tejtto funkcii definujem vstupne parametre ktore chcem testovat
+    #hodnoty na testovanie sa nachadzaju v inputs, na tych hodnotach som moj program testoval
     array = [5, 20, 15, 10, 3, 14, 9, 4, 21, 16, 19, 6, 23, 2, 11, 24, 13, 8, 17, 22, 7, 18, 25, 12, 1]
+    n = 5  # velkost mapy
     index = 8  # zaciatocny index
     x = 6  # x - suradnica
     y = 2  # y - suradnica
-    n = 5  # velkost mapy
     return array, index, x, y, n
 
 
